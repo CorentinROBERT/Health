@@ -8,37 +8,34 @@
 import SwiftUI
 import SwiftData
 
+import SwiftUI
+import SwiftData
+
 struct ProfileView: View {
-    @Query var users: [User]
-    @State private var showEdit = false
     
-    var user: User? {
-        users.first
-    }
+    @Query private var users: [User]
+    private let viewModel = ProfileViewModel()
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 16) {
+            
+            if let user = users.first {
                 
-                if let profile = user?.profile {
-                    
-                    if let photoURL = profile.photoURL {
-                        Text("Photo: \(photoURL)")
-                    }
-                    
-                    Text("\(profile.firstName) \(profile.lastName)")
-                        .font(.title)
-                    
-                    Text(profile.email)
-                        .foregroundStyle(.secondary)
-                }
+                Text(user.profile?.firstName ?? "")
+                    .font(.title)
+                    .bold()
                 
-                Button("Modifier profil") {
-                    showEdit = true
+                Text("Age: \(viewModel.age(user)) ans")
+                
+                Text("Devices: \(viewModel.connectedDevicesCount(user))")
+                
+                Button("Demander suppression compte") {
+                    viewModel.requestAccountDeletion(user: user)
                 }
+                .foregroundColor(.red)
             }
-            .navigationTitle("Profil")
         }
+        .padding()
     }
 }
 

@@ -7,39 +7,34 @@
 
 import SwiftUI
 import SwiftData
+import Foundation
 
 struct SportView: View {
-    @Environment(\.modelContext) var context
-    @Query(sort: \SportActivity.date, order: .reverse) var activities: [SportActivity]
     
-    @State private var showAdd = false
+    @Query private var activities: [SportActivity]
+    @Environment(\.modelContext) private var context
+    
+    @StateObject private var viewModel = SportViewModel()
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(activities) { activity in
+                ForEach(viewModel.sorted(activities)) { activity in
                     VStack(alignment: .leading) {
-                        Text(activity.type.rawValue)
+                        Text(activity.type.rawValue.capitalized)
                             .bold()
+                        
                         Text("\(activity.duration / 60, specifier: "%.0f") min")
                             .font(.caption)
                     }
                 }
                 .onDelete { indexSet in
-                    indexSet.forEach { context.delete(activities[$0]) }
+                    indexSet.forEach {
+                        viewModel.delete(activities[$0], context: context)
+                    }
                 }
             }
             .navigationTitle("Sport")
-            .toolbar {
-                Button {
-                    showAdd = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            .sheet(isPresented: $showAdd) {
-                AddSportView()
-            }
         }
     }
 }

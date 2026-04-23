@@ -9,37 +9,31 @@ import SwiftUI
 import SwiftData
 
 struct NutritionView: View {
-    @Environment(\.modelContext) var context
-    @Query(sort: \NutritionLog.date, order: .reverse) var logs: [NutritionLog]
     
-    @State private var showAdd = false
+    @Query private var logs: [NutritionLog]
+    @Environment(\.modelContext) private var context
+    
+    @StateObject private var viewModel = NutritionViewModel()
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(logs) { log in
-                    HStack {
-                        Text("\(log.calories) kcal")
-                        Spacer()
-                        Text(log.date, style: .date)
-                            .font(.caption)
-                    }
+                
+                Section("Calories") {
+                    Text("\(viewModel.totalCalories(logs)) kcal")
                 }
-                .onDelete { indexSet in
-                    indexSet.forEach { context.delete(logs[$0]) }
+                
+                Section("Logs") {
+                    ForEach(logs) { log in
+                        VStack(alignment: .leading) {
+                            Text("\(log.calories) kcal")
+                            Text(log.date.formatted())
+                                .font(.caption)
+                        }
+                    }
                 }
             }
             .navigationTitle("Nutrition")
-            .toolbar {
-                Button {
-                    showAdd = true
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            .sheet(isPresented: $showAdd) {
-                AddNutritionView()
-            }
         }
     }
 }

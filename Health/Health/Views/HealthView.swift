@@ -9,26 +9,29 @@ import SwiftUI
 import SwiftData
 
 struct HealthView: View {
-    @Environment(\.modelContext) var context
-    @Query(sort: \HealthRecord.date, order: .reverse) var records: [HealthRecord]
+    
+    @Query private var metrics: [HealthMetric]
+    @StateObject private var viewModel = HealthViewModel()
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(records) { record in
-                    VStack(alignment: .leading) {
-                        Text(record.title)
-                            .bold()
-                        Text(record.type.rawValue)
-                            .font(.caption)
-                        Text(record.date, style: .date)
-                            .font(.caption2)
-                    }
-                }
-                .onDelete { indexSet in
-                    indexSet.forEach { context.delete(records[$0]) }
+            VStack(spacing: 20) {
+                
+                Text("Poids actuel")
+                    .font(.headline)
+                
+                Text("\(viewModel.latestWeight(metrics), specifier: "%.1f") kg")
+                    .font(.largeTitle)
+                    .bold()
+                
+                Text("Historique")
+                    .font(.headline)
+                
+                ForEach(viewModel.weightTrend(metrics), id: \.self) { value in
+                    Text("\(value, specifier: "%.1f") kg")
                 }
             }
+            .padding()
             .navigationTitle("Santé")
         }
     }
