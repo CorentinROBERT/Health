@@ -9,55 +9,59 @@ import SwiftUI
 import SwiftData
 
 struct AddSportView: View {
-    
-    @Environment(\.modelContext) var context
-    @Environment(\.dismiss) var dismiss
-    
+    @ObservedObject var viewModel: SportViewModel
+
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+
     @State private var type: SportType = .running
     @State private var duration: Double = 30
     @State private var calories: Double = 200
     @State private var notes: String = ""
-    
+
+    private var isFormValid: Bool {
+        duration > 0
+    }
+
     var body: some View {
         NavigationStack {
             Form {
-                
-                Picker("Type", selection: $type) {
-                    ForEach(SportType.allCases, id: \.self) { type in
-                        Text(type.rawValue.capitalized)
+                Section("Activite") {
+                    Picker("Type", selection: $type) {
+                        ForEach(SportType.allCases, id: \.self) { type in
+                            Text(type.rawValue.capitalized)
+                        }
                     }
+
+                    TextField("Duree (min)", value: $duration, format: .number)
+                        .keyboardType(.decimalPad)
                 }
-                
-                TextField("Durée (min)", value: $duration, format: .number)
-                    .keyboardType(.decimalPad)
-                
-                TextField("Calories", value: $calories, format: .number)
-                    .keyboardType(.decimalPad)
-                
-                TextField("Notes", text: $notes)
+
+                Section("Details") {
+                    TextField("Calories", value: $calories, format: .number)
+                        .keyboardType(.decimalPad)
+
+                    TextField("Notes", text: $notes, axis: .vertical)
+                        .lineLimit(3, reservesSpace: true)
+                }
             }
             .navigationTitle("Ajouter sport")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        let activity = SportActivity(
-                            date: Date(),
+                    Button("Ajouter") {
+                        viewModel.add(
                             type: type,
-                            duration: duration * 60
+                            duration: duration * 60,
+                            calories: calories > 0 ? calories : nil,
+                            notes: notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : notes,
+                            context: context
                         )
-                        
-                        activity.calories = calories
-                        activity.distance = nil
-                        activity.notes = notes.isEmpty ? nil : notes
-                        activity.intensity = nil
-                        
-                        context.insert(activity)
                         dismiss()
-                    } label: {
-                        Text("Ajouter")
                     }
+                    .disabled(!isFormValid)
                 }
-                
+
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Annuler") {
                         dismiss()
@@ -69,5 +73,5 @@ struct AddSportView: View {
 }
 
 #Preview {
-    AddSportView()
+    AddSportView(viewModel: SportViewModel())
 }

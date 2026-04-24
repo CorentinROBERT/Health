@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
 
 @Model
@@ -22,10 +21,4 @@ final class Attachment {
         self.fileURL = fileURL
         self.type = type
     }
-}
-
-enum AttachmentType: String, Codable {
-    case image
-    case pdf
-    case document
 }
