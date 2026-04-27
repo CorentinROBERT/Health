@@ -10,6 +10,7 @@ import SwiftData
 
 struct NutritionView: View {
     @Query private var logs: [NutritionLog]
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var context
 
     @StateObject private var viewModel = NutritionViewModel()
@@ -125,7 +126,9 @@ private extension NutritionView {
             RoundedRectangle(cornerRadius: 28, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [Color.white.opacity(0.95), Color.white.opacity(0.74)],
+                        colors: colorScheme == .dark
+                            ? [Color.white.opacity(0.12), Color.white.opacity(0.04)]
+                            : [Color.white.opacity(0.95), Color.white.opacity(0.74)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -133,9 +136,12 @@ private extension NutritionView {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .strokeBorder(Color.white.opacity(0.55), lineWidth: 1)
+                .strokeBorder(
+                    colorScheme == .dark ? Color.white.opacity(0.12) : Color.white.opacity(0.55),
+                    lineWidth: 1
+                )
         )
-        .shadow(color: .black.opacity(0.06), radius: 20, y: 10)
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0.18 : 0.06), radius: 20, y: 10)
     }
 
     var nutritionSection: some View {

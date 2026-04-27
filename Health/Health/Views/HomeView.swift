@@ -10,6 +10,7 @@ import SwiftData
 
 struct HomeView: View {
     @Query private var users: [User]
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel = HomeViewModel()
 
     private let columns = [
@@ -109,7 +110,9 @@ private extension HomeView {
             RoundedRectangle(cornerRadius: 28, style: .continuous)
                 .fill(
                     LinearGradient(
-                        colors: [Color.white.opacity(0.96), Color.white.opacity(0.72)],
+                        colors: colorScheme == .dark
+                            ? [Color.white.opacity(0.12), Color.white.opacity(0.04)]
+                            : [Color.white.opacity(0.96), Color.white.opacity(0.72)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -117,9 +120,12 @@ private extension HomeView {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .strokeBorder(Color.white.opacity(0.5), lineWidth: 1)
+                .strokeBorder(
+                    colorScheme == .dark ? Color.white.opacity(0.12) : Color.white.opacity(0.5),
+                    lineWidth: 1
+                )
         )
-        .shadow(color: .black.opacity(0.06), radius: 20, y: 10)
+        .shadow(color: .black.opacity(colorScheme == .dark ? 0.18 : 0.06), radius: 20, y: 10)
     }
 
     var insightCard: some View {

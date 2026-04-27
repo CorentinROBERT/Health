@@ -14,32 +14,32 @@ struct AddNutritionView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
-    @State private var calories: Int = 500
-    @State private var protein: Double = 0
-    @State private var carbs: Double = 0
-    @State private var fat: Double = 0
+    @State private var caloriesText = ""
+    @State private var proteinText = ""
+    @State private var carbsText = ""
+    @State private var fatText = ""
     @State private var dietType: DietType = .normal
 
     private var isFormValid: Bool {
-        calories > 0
+        Int(caloriesText) ?? 0 > 0
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section("Apport") {
-                    TextField("Calories", value: $calories, format: .number)
+                    TextField("Calories (Ex. 550 Kcal)", text: $caloriesText)
                         .keyboardType(.numberPad)
                 }
 
                 Section("Macros") {
-                    TextField("Proteines", value: $protein, format: .number)
+                    TextField("Protéines (Ex. 30g)", text: $proteinText)
                         .keyboardType(.decimalPad)
 
-                    TextField("Glucides", value: $carbs, format: .number)
+                    TextField("Glucides (Ex. 60g)", text: $carbsText)
                         .keyboardType(.decimalPad)
 
-                    TextField("Lipides", value: $fat, format: .number)
+                    TextField("Lipides (Ex. 20g)", text: $fatText)
                         .keyboardType(.decimalPad)
                 }
 
@@ -56,8 +56,11 @@ struct AddNutritionView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Ajouter") {
+                        let protein = Double(proteinText.replacingOccurrences(of: ",", with: ".")) ?? 0
+                        let carbs = Double(carbsText.replacingOccurrences(of: ",", with: ".")) ?? 0
+                        let fat = Double(fatText.replacingOccurrences(of: ",", with: ".")) ?? 0
                         viewModel.add(
-                            calories: calories,
+                            calories: Int(caloriesText) ?? 0,
                             protein: protein,
                             carbs: carbs,
                             fat: fat,

@@ -15,33 +15,33 @@ struct AddSportView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var type: SportType = .running
-    @State private var duration: Double = 30
-    @State private var calories: Double = 200
+    @State private var durationText = ""
+    @State private var caloriesText = ""
     @State private var notes: String = ""
 
     private var isFormValid: Bool {
-        duration > 0
+        Double(durationText.replacingOccurrences(of: ",", with: ".")) ?? 0 > 0
     }
 
     var body: some View {
         NavigationStack {
             Form {
-                Section("Activite") {
+                Section("Activité") {
                     Picker("Type", selection: $type) {
                         ForEach(SportType.allCases, id: \.self) { type in
                             Text(type.rawValue.capitalized)
                         }
                     }
 
-                    TextField("Duree (min)", value: $duration, format: .number)
+                    TextField("Ex. 45 min", text: $durationText)
                         .keyboardType(.decimalPad)
                 }
 
                 Section("Details") {
-                    TextField("Calories", value: $calories, format: .number)
+                    TextField("Ex. 320 calories", text: $caloriesText)
                         .keyboardType(.decimalPad)
 
-                    TextField("Notes", text: $notes, axis: .vertical)
+                    TextField("Ajoutez un contexte sur votre seance", text: $notes, axis: .vertical)
                         .lineLimit(3, reservesSpace: true)
                 }
             }
@@ -50,10 +50,12 @@ struct AddSportView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Ajouter") {
+                        let duration = Double(durationText.replacingOccurrences(of: ",", with: ".")) ?? 0
+                        let calories = Double(caloriesText.replacingOccurrences(of: ",", with: "."))
                         viewModel.add(
                             type: type,
                             duration: duration * 60,
-                            calories: calories > 0 ? calories : nil,
+                            calories: (calories ?? 0) > 0 ? calories : nil,
                             notes: notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : notes,
                             context: context
                         )

@@ -36,12 +36,17 @@ struct EditProfileView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Identite") {
-                    TextField("Prenom", text: $firstName)
-                    TextField("Nom", text: $lastName)
+                Section("Informations personnelles") {
+                    TextField("Firstname", text: $firstName)
+                        .textContentType(.givenName)
+
+                    TextField("LastName", text: $lastName)
+                        .textContentType(.familyName)
+
                     TextField("Email", text: $email)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.emailAddress)
+                        .textContentType(.emailAddress)
                 }
             }
             .navigationTitle("Modifier profil")
@@ -73,6 +78,6 @@ struct EditProfileView: View {
 
 #Preview {
     let user = User()
-    user.profile = Profile(firstName: "Corentin", lastName: "Robert", birthDate: .now, email: "mail@test.com")
+    user.profile = Profile(firstName: "Jon", lastName: "Doe", birthDate: .now, email: "mail@test.com")
     return EditProfileView(user: user, viewModel: ProfileViewModel())
 }

@@ -24,10 +24,10 @@ struct HealthRecordDetailView: View {
 
                 detailSection(title: "Type", value: record.type.displayName)
                 detailSection(title: "Date", value: record.date.formatted(date: .complete, time: .omitted))
-                detailSection(title: "Details", value: record.details)
+                detailSection(title: "Détails", value: record.details)
 
                 if let doctorName = record.doctorName, !doctorName.isEmpty {
-                    detailSection(title: "Medecin", value: doctorName)
+                    detailSection(title: "Médecin", value: doctorName)
                 }
 
                 if let location = record.location, !location.isEmpty {
@@ -43,7 +43,7 @@ struct HealthRecordDetailView: View {
             .padding(.bottom, 32)
         }
         .background(Color(.systemGroupedBackground))
-        .navigationTitle("Detail dossier")
+        .navigationTitle("Détail dossier")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -69,7 +69,7 @@ struct HealthRecordDetailView: View {
                     Button("Annuler", role: .cancel) {
                     }
                 } message: {
-                    Text("Ce dossier medical et ses pieces jointes seront supprimes.")
+                    Text("Ce dossier médical et ses pièces jointes seront supprimés.")
                 }
             }
         }
@@ -89,7 +89,7 @@ private extension HealthRecordDetailView {
             Text(record.title)
                 .font(.system(.title, design: .rounded, weight: .bold))
 
-            Text("Consultez les informations detaillees de ce dossier medical.")
+            Text("Consultez les informations détaillees de ce dossier médical.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -103,7 +103,7 @@ private extension HealthRecordDetailView {
 
     var attachmentsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Pieces jointes")
+            Text("Pièces jointes")
                 .font(.headline)
 
             ForEach(record.attachments) { attachment in
@@ -171,7 +171,7 @@ private extension HealthRecordDetailView {
             Text(value)
                 .font(.body)
         }
-        .padding(.bottom, 14)
+        .padding(.vertical, 14)
         .padding(.leading,20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
@@ -183,7 +183,7 @@ private extension HealthRecordDetailView {
 }
 
 #Preview {
-    let record = HealthRecord(date: .now, type: .consultation, title: "Consultation generale", details: "Controle annuel et suivi general.")
+    let record = HealthRecord(date: .now, type: .consultation, title: "Consultation générale", details: "Contrôle annuel et suivi général.")
     record.doctorName = "Dr Martin"
     record.location = "Paris"
     return HealthRecordDetailView(record: record)

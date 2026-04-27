@@ -71,7 +71,7 @@ private extension HealthMetricDetailView {
             Text(metric.type.formattedValue(metric.value))
                 .font(.system(.largeTitle, design: .rounded, weight: .bold))
 
-            Text("Historique de votre suivi de sante.")
+            Text("Historique de votre suivi de santé.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -94,6 +94,8 @@ private extension HealthMetricDetailView {
             Text(value)
                 .font(.body)
         }
+        .padding(.vertical, 14)
+        .padding(.leading,20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)

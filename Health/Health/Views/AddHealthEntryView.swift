@@ -17,7 +17,7 @@ struct AddHealthEntryView: View {
 
     @State private var entryKind: EntryKind = .metric
     @State private var metricType: MetricType = .weight
-    @State private var metricValue: Double = 70
+    @State private var metricValueText = ""
 
     @State private var recordType: HealthRecordType = .consultation
     @State private var title: String = ""
@@ -30,7 +30,7 @@ struct AddHealthEntryView: View {
     private var isFormValid: Bool {
         switch entryKind {
         case .metric:
-            return metricValue > 0
+            return Double(metricValueText.replacingOccurrences(of: ",", with: ".")) ?? 0 > 0
         case .record:
             return !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
                 !details.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -55,7 +55,7 @@ struct AddHealthEntryView: View {
                             }
                         }
 
-                        TextField("Valeur", value: $metricValue, format: .number)
+                        TextField("Ex. 72.4", text: $metricValueText)
                             .keyboardType(.decimalPad)
                     }
                 } else {
@@ -66,15 +66,15 @@ struct AddHealthEntryView: View {
                             }
                         }
 
-                        TextField("Titre", text: $title)
+                        TextField("Ex. Consultation generale", text: $title)
 
-                        TextField("Details", text: $details, axis: .vertical)
+                        TextField("Decrivez le dossier ou le resultat medical", text: $details, axis: .vertical)
                             .lineLimit(3, reservesSpace: true)
                     }
 
                     Section("Complement") {
-                        TextField("Medecin", text: $doctorName)
-                        TextField("Lieu", text: $location)
+                        TextField("Ex. Dr Martin", text: $doctorName)
+                        TextField("Ex. Hopital Saint-Louis", text: $location)
                     }
 
                     Section("Pieces jointes") {
@@ -137,7 +137,7 @@ struct AddHealthEntryView: View {
         case .metric:
             viewModel.addMetric(
                 type: metricType,
-                value: metricValue,
+                value: Double(metricValueText.replacingOccurrences(of: ",", with: ".")) ?? 0,
                 context: context
             )
         case .record:
