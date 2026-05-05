@@ -40,16 +40,16 @@ struct AddHealthEntryView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Picker("Type d'entree", selection: $entryKind) {
+                Picker("Type d'entrée", selection: $entryKind) {
                     ForEach(EntryKind.allCases, id: \.self) { kind in
-                        Text(kind == .metric ? "Metrique" : "Dossier")
+                        Text(kind == .metric ? "Métrique" : "Dossier")
                     }
                 }
                 .pickerStyle(.segmented)
 
                 if entryKind == .metric {
-                    Section("Metrique") {
-                        Picker("Categorie", selection: $metricType) {
+                    Section("Métrique") {
+                        Picker("Catégorie", selection: $metricType) {
                             ForEach(MetricType.allCases, id: \.self) { type in
                                 Text(type.displayName)
                             }
@@ -59,8 +59,8 @@ struct AddHealthEntryView: View {
                             .keyboardType(.decimalPad)
                     }
                 } else {
-                    Section("Dossier medical") {
-                        Picker("Categorie", selection: $recordType) {
+                    Section("Dossier médical") {
+                        Picker("Catégorie", selection: $recordType) {
                             ForEach(HealthRecordType.allCases, id: \.self) { type in
                                 Text(type.displayName)
                             }
@@ -73,17 +73,17 @@ struct AddHealthEntryView: View {
                     }
 
                     Section("Complement") {
-                        TextField("Ex. Dr Martin", text: $doctorName)
-                        TextField("Ex. Hopital Saint-Louis", text: $location)
+                        TextField("Nom du docteur ou spécialiste", text: $doctorName)
+                        TextField("Nom de l'hopital ou de la clinique", text: $location)
                     }
 
-                    Section("Pieces jointes") {
+                    Section("Pièces jointes") {
                         Button("Ajouter un PDF ou une image") {
                             isImportingFiles = true
                         }
 
                         if attachments.isEmpty {
-                            Text("Aucune piece jointe")
+                            Text("Aucune pièce jointe")
                                 .foregroundStyle(.secondary)
                         } else {
                             ForEach(attachments) { attachment in
@@ -106,7 +106,7 @@ struct AddHealthEntryView: View {
                     }
                 }
             }
-            .navigationTitle("Ajouter sante")
+            .navigationTitle("Ajouter santé")
             .navigationBarTitleDisplayMode(.inline)
             .fileImporter(
                 isPresented: $isImportingFiles,

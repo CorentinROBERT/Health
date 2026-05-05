@@ -194,7 +194,7 @@ private extension SportView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color(.green.opacity(0.12)))
         )
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {

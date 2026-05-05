@@ -232,7 +232,7 @@ private extension NutritionView {
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color(.orange.opacity(0.12)))
         )
     }
 }

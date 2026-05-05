@@ -43,7 +43,7 @@ struct AddNutritionView: View {
                         .keyboardType(.decimalPad)
                 }
 
-                Section("Regime") {
+                Section("Régime") {
                     Picker("Type", selection: $dietType) {
                         ForEach(DietType.allCases, id: \.self) { diet in
                             Text(diet.rawValue.capitalized)

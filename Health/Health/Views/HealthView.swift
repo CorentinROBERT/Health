@@ -50,15 +50,18 @@ struct HealthView: View {
                         headerView
                             .listRowInsets(EdgeInsets(top: 16, leading: 20, bottom: 12, trailing: 20))
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
 
                         kpisGrid
                             .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 12, trailing: 20))
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
 
                         if !weightTrend.isEmpty {
                             trendCard
                                 .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 8, trailing: 20))
                                 .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                         }
                     }
 
@@ -70,6 +73,7 @@ struct HealthView: View {
                             )
                             .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
                         } else {
                             ForEach(visibleMetrics) { metric in
                                 NavigationLink {
@@ -80,6 +84,7 @@ struct HealthView: View {
                                 .buttonStyle(.plain)
                                 .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                                 .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                             }
                             .onDelete(perform: deleteMetrics)
                         }
@@ -93,6 +98,7 @@ struct HealthView: View {
                             )
                             .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
                         } else {
                             ForEach(sortedRecords) { record in
                                 NavigationLink {
@@ -103,6 +109,7 @@ struct HealthView: View {
                                 .buttonStyle(.plain)
                                 .listRowInsets(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                                 .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                             }
                             .onDelete(perform: deleteRecords)
                         }
@@ -246,7 +253,7 @@ private extension HealthView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color(.red.opacity(0.12)))
         )
     }
 
@@ -325,7 +332,7 @@ private extension HealthView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color(.red.opacity(0.12)))
         )
     }
 

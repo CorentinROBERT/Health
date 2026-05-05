@@ -29,8 +29,6 @@ struct HealthApp: App {
         
         do {
             let container = try ModelContainer(for: schema, configurations: [config])
-            
-            // 👉 SEED ICI
             let context = container.mainContext
             DataSeeder.seedIfNeeded(context: context)
             

@@ -176,7 +176,7 @@ private extension HealthRecordDetailView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
+                .fill(Color(.red.withAlphaComponent(0.15)))
         )
     }
 
