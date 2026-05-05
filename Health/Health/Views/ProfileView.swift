@@ -83,7 +83,7 @@ private extension ProfileView {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(viewModel.fullName(user))
-                    .font(.system(.title, design: .rounded, weight: .bold))
+                    .font(.system(.title3, design: .rounded, weight: .bold))
 
                 Text("\(viewModel.age(user)) ans")
                     .font(.subheadline)
@@ -237,4 +237,25 @@ private extension ProfileView {
 
 #Preview {
     ProfileView()
+        .modelContainer(profilePreviewContainer)
 }
+
+private let profilePreviewContainer: ModelContainer = {
+    let schema = Schema([
+        User.self,
+        Profile.self,
+        HealthRecord.self,
+        Attachment.self,
+        SportActivity.self,
+        NutritionLog.self,
+        HealthMetric.self,
+        Goal.self,
+        ConnectedDevice.self,
+        WeightEntry.self
+    ])
+
+    let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [configuration])
+    DataSeeder.seedIfNeeded(context: container.mainContext)
+    return container
+}()
